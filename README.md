@@ -11,7 +11,7 @@ et aux téléphones, et peut être installée comme une application. Aucun servi
 ## Documentation
 
 * [Guide d'installation](docs/GUIDE-INSTALLATION.md) : installer, configurer et exploiter l'application.
-* [Guide d'utilisation](docs/Guide-utilisation-MADSI.docx) : fonctionnement et usage au quotidien (document Word de 4 pages).
+* [Guide d'utilisation](docs/Guide-utilisation-MADSI.docx) : fonctionnement et usage au quotidien (document Word : 4 pages de texte et une annexe de captures d'écran).
 
 ## Fonctions
 
