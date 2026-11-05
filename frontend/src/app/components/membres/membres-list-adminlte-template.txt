@@ -1,0 +1,17 @@
+Template de référence pour membres-list avec AdminLTE
+
+Structure:
+1. app-content-header : Header avec breadcrumb
+2. app-content > container-fluid : Zone de contenu
+3. card : Card Bootstrap pour le tableau
+4. card-header : Entête avec titre et boutons
+5. card-body : Corps avec tableau
+6. table.table.table-striped : Tableau AdminLTE
+7. Pagination Bootstrap
+
+Classes importantes:
+- table table-bordered table-striped table-hover
+- btn btn-primary, btn-sm
+- badge text-bg-*
+- card, card-header, card-body
+- input-group pour les filtres

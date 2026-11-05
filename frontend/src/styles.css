@@ -1,0 +1,89 @@
+/* Styles généraux de MADSI. AdminLTE est chargé avant : on ne surcharge ici que le nécessaire. */
+
+/* Empêche le défilement horizontal de toute la page : seuls les tableaux défilent, dans leur cadre. */
+body { max-width: 100%; overflow-x: clip; }
+img { max-width: 100%; }
+
+/* Les tableaux larges défilent dans leur cadre (jamais la page entière). */
+.table-responsive, .table-container, .table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+/* ---------- Tablette et téléphone ---------- */
+@media (max-width: 991.98px) {
+  .page-container { padding: 16px !important; }
+  .app-content-header, .app-content { padding-left: 0; padding-right: 0; }
+}
+
+@media (max-width: 767.98px) {
+  /* Pages construites avec « page-container » (cotisations, prêts, opérations…) */
+  .page-container { padding: 12px !important; }
+  .page-header { flex-wrap: wrap; gap: 10px; align-items: center !important; }
+  .page-header h1 { font-size: 1.35rem !important; }
+  .page-header .btn { width: 100%; }
+
+  /* Cartes de chiffres : deux par ligne au lieu d'une pleine largeur chacune */
+  .stats-row { display: grid !important; grid-template-columns: 1fr 1fr; gap: 10px !important; }
+  .stat-card { min-width: 0 !important; padding: 12px !important; gap: 10px !important; }
+  .stat-card .stat-icon { width: 40px !important; height: 40px !important; font-size: 1.1rem !important; flex: none; }
+  .stat-card .stat-value { font-size: 1.15rem !important; }
+  .stat-card .stat-label { font-size: .75rem !important; }
+
+  /* Filtres : un champ par ligne */
+  .filters-section { flex-wrap: wrap !important; padding: 12px !important; gap: 10px !important; }
+  .filter-group { flex: 1 1 100% !important; min-width: 0; }
+
+  /* Fil d'Ariane inutile sur petit écran */
+  .app-content-header .breadcrumb { display: none; }
+  .app-content-header h3, .app-content-header h1 { font-size: 1.3rem; }
+
+  /* Tableaux : chaque ligne devient une fiche « intitulé : valeur » (les intitulés sont posés par le menu, voir LayoutComponent) */
+  .app-main table:not(.table-garder), .app-main table:not(.table-garder) tbody { display: block; width: 100%; }
+  .app-main table:not(.table-garder) thead { display: none; }
+  .app-main table:not(.table-garder) tr {
+    display: block; margin: 0 0 10px; padding: 6px 12px; border: 1px solid #e3e6ea !important;
+    border-radius: 10px; background: #fff !important; box-shadow: 0 1px 2px rgba(0,0,0,.04);
+  }
+  .app-main table:not(.table-garder) td {
+    display: flex; justify-content: space-between; align-items: center; gap: 14px; text-align: right;
+    padding: .4rem 0 !important; border: 0 !important; border-bottom: 1px dashed #eceff2 !important;
+    white-space: normal !important; background: transparent !important; box-shadow: none !important; font-size: .9rem;
+  }
+  .app-main table:not(.table-garder) td:last-child { border-bottom: 0 !important; }
+  .app-main table:not(.table-garder) td[data-label]::before {
+    content: attr(data-label); flex: 0 0 38%; text-align: left; font-weight: 600; color: #6c757d; font-size: .78rem;
+    text-transform: uppercase; letter-spacing: .02em;
+  }
+  .app-main table:not(.table-garder) td[colspan] { display: block; text-align: center; }
+  .table-container, .table-responsive { background: transparent !important; box-shadow: none !important; overflow: visible !important; }
+  .filter-group { flex: 1 1 calc(50% - 10px) !important; }
+
+  /* Fenêtres (modales) : plein écran, boutons larges */
+  .modal-dialog { margin: .5rem; }
+  .modal-footer .btn { flex: 1 1 auto; }
+  .container-fluid { padding-left: 12px; padding-right: 12px; }
+  .card-body { padding: .9rem; }
+}
+
+/* Zone tactile confortable pour les boutons d'action */
+@media (pointer: coarse) {
+  .btn-sm { padding: .4rem .65rem; }
+  .form-control, .form-select { min-height: 42px; }
+}
+
+/* ---------- Formulaires dans des fenêtres : deux colonnes sur ordinateur, une seule sur téléphone ---------- */
+.modal-footer { background: transparent !important; }
+.modal-content form .form-row { align-items: flex-start; }
+.modal-content form .form-row > .form-group { margin-top: 0; }
+@media (min-width: 768px) {
+  .modal-content:has(> form) { max-width: 760px !important; width: 92vw !important; }
+  .modal-content > form {
+    display: grid; grid-template-columns: 1fr 1fr; column-gap: 18px; align-items: start;
+  }
+  .modal-content > form > * { grid-column: 1 / -1; }
+  .modal-content > form > .form-group:not(:has(textarea, small, .info-box, .alert, .periode-row)) { grid-column: auto; }
+}
+.modal-content > form > .form-group, .modal-content form .form-row > .form-group { margin: 0 0 16px !important; }
+.modal-content form .form-row { margin: 0; gap: 18px; }
+.modal-content > form { padding: 22px 28px 8px !important; }
+.modal-content > form .form-group { padding: 0 !important; }
+.modal-content > form > .modal-footer { margin: 4px -28px 0; padding: 14px 28px; border-top: 1px solid #e9ecef; }
+@media (max-width: 767.98px) { .modal-content > form { padding: 16px !important; } .modal-content > form > .modal-footer { margin: 4px -16px 0; padding: 12px 16px; } }

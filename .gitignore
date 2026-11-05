@@ -1,0 +1,28 @@
+# Dépendances et builds
+node_modules/
+target/
+dist/
+.angular/
+*.class
+
+# Fichiers générés à l'exécution (données réelles : reçus, rapports, photos)
+backend/uploads/
+
+# Secrets et sauvegardes
+.env
+*.dump
+*.pgpass
+temp_pgpass.txt
+IDENTIFIANTS*
+
+# Éditeurs / outils
+.idea/
+.vscode/
+*.log
+
+# Données générées au premier démarrage du serveur (clé JWT, identifiants initiaux)
+backend/data/
+
+# Sauvegardes et fichiers temporaires des tests
+backend/sauvegardes/
+tests/.tmp/

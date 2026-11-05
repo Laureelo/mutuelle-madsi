@@ -1,0 +1,30 @@
+# Base de données PostgreSQL prête à l'emploi (optionnel : vous pouvez aussi utiliser un PostgreSQL déjà installé).
+#
+# Utilisation :
+#   1. copier .env.example en .env et choisir un mot de passe
+#   2. docker compose up -d
+#   3. dans backend/.env, mettre la même valeur dans DB_PASSWORD
+#
+# Les tables sont créées automatiquement par l'application au premier démarrage.
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: madsi-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: mutuelle
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Définissez POSTGRES_PASSWORD dans le fichier .env}
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d mutuelle"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
