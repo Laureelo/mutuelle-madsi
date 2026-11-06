@@ -1,4 +1,4 @@
-import { Component, inject, AfterViewInit, OnDestroy, HostListener } from '@angular/core';
+import { Component, inject, OnDestroy, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
@@ -283,7 +283,7 @@ interface MenuItem {
     }
   `]
 })
-export class LayoutComponent implements AfterViewInit, OnDestroy {
+export class LayoutComponent implements OnDestroy {
   private notificationService = inject(NotificationService);
   nonLues = 0;
   notifs: Notif[] = [];
@@ -422,14 +422,6 @@ export class LayoutComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  ngAfterViewInit(): void {
-    // Initialiser AdminLTE après le chargement de la vue
-    if (typeof window !== 'undefined' && window.AdminLTE) {
-      // AdminLTE est chargé, on peut l'initialiser si nécessaire
-      console.log('AdminLTE loaded successfully');
-    }
-  }
-
   get visibleMenuItems(): MenuItem[] {
     if (!this.currentUser?.roles) {
       return this.menuItems.filter(item => !item.roles && !item.excludeRoles && !item.excludeEtats);
@@ -504,17 +496,6 @@ export class LayoutComponent implements AfterViewInit, OnDestroy {
 
   fermerMenuMobile(): void {
     document.body.classList.remove('sidebar-open');
-  }
-
-  getRoleLabel(role: string): string {
-    const roleLabels: Record<string, string> = {
-      'VISITEUR': 'Visiteur',
-      'MEMBRE': 'Membre',
-      'TRESORIER': 'Trésorier',
-      'COMMISSAIRE': 'Commissaire aux comptes',
-      'ADMIN': 'Administrateur'
-    };
-    return roleLabels[role] || role;
   }
 
   logout(): void {

@@ -28,8 +28,10 @@ import com.madsi.backend.operations.ReceiptService;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service @RequiredArgsConstructor
+@Slf4j
 public class CotisationService {
 
     private final CotisationRepository repo;
@@ -218,7 +220,7 @@ public class CotisationService {
             );
         } catch (Exception histoException) {
             // Log l'erreur mais continue - l'historique n'est pas critique
-            System.err.println("Erreur lors de l'enregistrement dans l'historique (non bloquant): " + histoException.getMessage());
+            log.warn("Historique de la cotisation non enregistré (non bloquant) : {}", histoException.getMessage());
         }
         
         return saved;

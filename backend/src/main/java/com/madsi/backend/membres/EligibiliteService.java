@@ -104,11 +104,6 @@ public class EligibiliteService {
         return settingsService.montantCotisation().multiply(BigDecimal.valueOf(nombreMoisImpayes(membreId)));
     }
 
-    /** Le membre est-il à jour de ses cotisations ? */
-    public boolean estAJour(Long membreId) {
-        return moisImpayes(membreId).isEmpty();
-    }
-
     /**
      * Lève une exception explicite si le membre n'est pas à jour (sauf si l'option est désactivée dans les Paramètres).
      *

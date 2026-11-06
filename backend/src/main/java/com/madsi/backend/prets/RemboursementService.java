@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -28,7 +27,7 @@ public class RemboursementService {
     private final ReceiptService receiptService;
     private final PretService pretService;
     private final HistoriqueService histo;
-    private final NotificationService notifService; // ✅ notifications
+    private final NotificationService notifService; // notifications
 
     // ---------- règles communes ----------
 

@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { RemboursementService } from '../../services/remboursement.service';
-import { PretService } from '../../services/pret.service';
 import { RemboursementPret } from '../../models/echeance.model';
 import { Pret } from '../../models/pret.model';
 import { DialogService } from '../../services/dialog.service';
@@ -601,7 +600,6 @@ import { DialogService } from '../../services/dialog.service';
 export class RemboursementsPendingComponent implements OnInit {
   private dialog = inject(DialogService);
   private remboursementService = inject(RemboursementService);
-  private pretService = inject(PretService);
 
   pendingRemboursements: RemboursementPret[] = [];
   pretMap: Record<number, Pret> = {};

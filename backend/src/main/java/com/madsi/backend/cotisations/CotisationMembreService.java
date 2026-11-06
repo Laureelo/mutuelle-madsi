@@ -24,6 +24,7 @@ import com.madsi.backend.operations.OperationRepository;
 import com.madsi.backend.stats.StatsService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Service pour la gestion des cotisations par les membres
@@ -32,6 +33,7 @@ import lombok.RequiredArgsConstructor;
  */
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CotisationMembreService {
 
     private final CotisationRepository cotisationRepo;
@@ -113,12 +115,10 @@ public class CotisationMembreService {
             // Stocker l'ID pour l'historique (avant toute autre opération)
             savedId = saved.getId();
             
-            System.out.println("✅ Cotisation sauvegardée avec succès - ID: " + savedId);
-            
         } catch (org.springframework.dao.DataIntegrityViolationException e) {
             // Si c'est une violation de contrainte unique
             String errorMsg = e.getMessage();
-            System.err.println("❌ DataIntegrityViolationException: " + errorMsg);
+            log.warn("Violation de contrainte à la sauvegarde d'une cotisation : {}", errorMsg);
             if (errorMsg != null && (errorMsg.contains("membre_id") || errorMsg.contains("periode") || errorMsg.contains("unique"))) {
                 throw new IllegalStateException(
                     "Une contrainte unique dans la base de données bloque la création. " +
@@ -128,8 +128,7 @@ public class CotisationMembreService {
             }
             throw e;
         } catch (Exception e) {
-            System.err.println("❌ Exception lors de la sauvegarde de la cotisation: " + e.getClass().getSimpleName() + " - " + e.getMessage());
-            e.printStackTrace();
+            log.error("Erreur lors de la sauvegarde de la cotisation", e);
             throw new RuntimeException("Erreur lors de la sauvegarde de la cotisation: " + e.getMessage(), e);
         }
         
@@ -144,11 +143,9 @@ public class CotisationMembreService {
                     "cotisation",
                     savedId
             );
-            System.out.println("✅ Historique enregistré avec succès");
         } catch (Exception histoException) {
             // Log l'erreur mais continue - l'historique n'est pas critique
-            System.err.println("⚠️ Erreur lors de l'enregistrement dans l'historique (non bloquant): " + histoException.getMessage());
-            histoException.printStackTrace();
+            log.warn("Historique de la déclaration non enregistré (non bloquant)", histoException);
             // Ne pas faire échouer la transaction à cause de l'historique
         }
 
@@ -225,14 +222,14 @@ public class CotisationMembreService {
                     saved.getId()
             );
         } catch (Exception histoException) {
-            System.err.println("Erreur lors de l'enregistrement dans l'historique (non bloquant): " + histoException.getMessage());
+            log.warn("Historique de la validation non enregistré (non bloquant) : {}", histoException.getMessage());
         }
 
         // Notifier le rafraîchissement des stats du dashboard
         try {
             statsService.notifyRefresh();
         } catch (Exception e) {
-            System.err.println("Erreur lors de la notification de rafraîchissement des stats (non bloquant): " + e.getMessage());
+            log.warn("Rafraîchissement des statistiques impossible (non bloquant) : {}", e.getMessage());
         }
 
         final var cotisationValidee = saved;
@@ -513,31 +510,9 @@ public class CotisationMembreService {
             throw new IllegalArgumentException("Aucune période valide à vérifier");
         }
 
-        // Récupérer TOUTES les cotisations du membre pour débogage
-        List<Cotisation> toutesCotisationsMembre = cotisationRepo.findByMembreIdOrderByPeriodeDesc(membreId);
-        
         // Récupérer les cotisations PAYE et EN_ATTENTE uniquement
         List<Cotisation> cotisationsPaye = cotisationRepo.findByMembreIdAndStatut(membreId, Enums.CotiStatut.PAYE);
         List<Cotisation> cotisationsEnAttente = cotisationRepo.findByMembreIdAndStatut(membreId, Enums.CotiStatut.EN_ATTENTE);
-
-        // Log pour débogage
-        System.out.println("=========================================");
-        System.out.println("=== VÉRIFICATION PÉRIODES ===");
-        System.out.println("Membre ID: " + membreId);
-        System.out.println("Périodes à vérifier: " + periodesNormalisees);
-        System.out.println("Total cotisations du membre: " + toutesCotisationsMembre.size());
-        System.out.println("Cotisations PAYE trouvées: " + cotisationsPaye.size());
-        System.out.println("Cotisations EN_ATTENTE trouvées: " + cotisationsEnAttente.size());
-        
-        // Afficher toutes les cotisations du membre pour débogage
-        System.out.println("\n--- Toutes les cotisations du membre ---");
-        for (Cotisation c : toutesCotisationsMembre) {
-            System.out.println(String.format(
-                "  Cotisation #%d - Statut: %s - Périodes: [%s] - Montant: %s",
-                c.getId(), c.getStatut(), c.getPeriodes(), c.getMontant()
-            ));
-        }
-        System.out.println("--- Fin liste cotisations ---\n");
 
         // Combiner les deux listes avec leurs statuts
         List<Cotisation> toutesLesCotisations = new ArrayList<>();
@@ -549,13 +524,8 @@ public class CotisationMembreService {
         StringBuilder detailsConflits = new StringBuilder();
 
         for (String periode : periodesNormalisees) {
-            boolean periodeTrouvee = false;
-            
-            System.out.println("Vérification période: " + periode);
-            
             for (Cotisation cot : toutesLesCotisations) {
                 if (cot.getPeriodes() == null || cot.getPeriodes().isBlank()) {
-                    System.out.println("  -> Ignorée (pas de périodes): Cotisation #" + cot.getId());
                     continue; // Ignorer les cotisations sans périodes
                 }
                 
@@ -565,11 +535,8 @@ public class CotisationMembreService {
                         .filter(p -> !p.isBlank())
                         .collect(Collectors.toList());
 
-                System.out.println("  -> Cotisation #" + cot.getId() + " - Périodes: " + periodesExistantes + " - Statut: " + cot.getStatut());
-
                 // Comparaison exacte (sensible à la casse)
                 if (periodesExistantes.contains(periode)) {
-                    System.out.println("  -> CONFLIT DÉTECTÉ pour période " + periode);
                     conflits.add(periode);
                     detailsConflits.append(String.format(
                         "\n- Période %s : cotisation #%d (statut: %s, montant: %s FCFA, date: %s, périodes: %s)",
@@ -580,21 +547,10 @@ public class CotisationMembreService {
                         cot.getDatePaiement(),
                         cot.getPeriodes()
                     ));
-                    periodeTrouvee = true;
                     break; // Une seule cotisation par période suffit
-                } else {
-                    System.out.println("  -> Pas de conflit (période " + periode + " non trouvée dans " + periodesExistantes + ")");
                 }
             }
-            
-            if (!periodeTrouvee) {
-                System.out.println("  -> Période " + periode + " : OK (pas de conflit)");
-            }
         }
-
-        System.out.println("=== FIN VÉRIFICATION ===");
-        System.out.println("Conflits trouvés: " + conflits.size());
-        System.out.println("=========================================");
 
         if (!conflits.isEmpty()) {
             throw new IllegalArgumentException(

@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
@@ -121,32 +121,6 @@ export class CotisationService {
     return this.http.get<Cotisation[]>(`${this.BASE_PATH}/membre/${membreId}`);
   }
 
-  getTotalByPeriode(periode: string): Observable<{ total: number }> {
-    return this.http.get<{ total: number }>(`${this.BASE_PATH}/total/periode/${periode}`);
-  }
-
-  /**
-   * Vérifie si une cotisation existe déjà pour un membre et une période
-   * Utilise l'endpoint backend dédié pour une vérification fiable
-   * Retourne la cotisation existante si elle existe, null sinon
-   */
-  checkExisting(membreId: number, periode: string): Observable<Cotisation | null> {
-    // Normaliser la période au format "YYYY-MM"
-    const normalizedPeriode = periode.trim();
-
-    // Utiliser l'endpoint backend dédié pour une vérification fiable
-    return this.http.get<{ exists: boolean; cotisation: Cotisation | null }>(
-      `${this.BASE_PATH}/exists/membre/${membreId}/periode/${encodeURIComponent(normalizedPeriode)}`
-    ).pipe(
-      map(response => response.exists ? response.cotisation : null),
-      catchError(err => {
-        console.warn('Erreur lors de la vérification d\'existence:', err);
-        // En cas d'erreur, retourner null pour permettre la tentative de création
-        return of(null);
-      })
-    );
-  }
-
   // ===== NOUVEAUX ENDPOINTS POUR DÉCLARATION PAR LES MEMBRES =====
 
   /**
@@ -204,15 +178,6 @@ export class CotisationService {
    */
   getToutesCotisations(): Observable<Cotisation[]> {
     return this.http.get<Cotisation[]>(`${this.BASE_PATH}/toutes`);
-  }
-
-  /**
-   * Vérifier les mois non payés pour un membre
-   */
-  getMoisNonPayes(membreId: number, annee: number): Observable<string[]> {
-    return this.http.get<string[]>(`${this.BASE_PATH}/mois-non-payes`, {
-      params: { membreId: membreId.toString(), annee: annee.toString() }
-    });
   }
 
   /**

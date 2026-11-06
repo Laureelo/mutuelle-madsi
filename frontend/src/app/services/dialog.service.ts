@@ -65,11 +65,6 @@ export class DialogService {
   info(message: string): void { this.toast('info', message); }
   attention(message: string): void { this.toast('attention', message, 8000); }
 
-  /** Extrait un message lisible d'une erreur HTTP. */
-  messageErreur(err: any, defaut = 'Une erreur est survenue.'): string {
-    return err?.error?.message || err?.message || defaut;
-  }
-
   fermerToast(id: number): void {
     this.toasts.update(l => l.filter(t => t.id !== id));
   }

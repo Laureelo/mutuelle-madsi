@@ -208,23 +208,6 @@ public class ManifestationService {
         return toDTO(out);
     }
 
-    public ManifestationDTO changeStatut(Long id, ManifStatut statut){
-        var m = repo.findById(id)
-                .orElseThrow(() -> new NotFoundException("Manifestation introuvable"));
-        m.setStatut(statut);
-        var out = repo.save(m);
-
-        histo.enregistrer(
-                out.getMembreId(),
-                "Changement statut manifestation",
-                "manifId=%d, statut=%s".formatted(out.getId(), statut),
-                HistoType.MANIFESTATION,
-                "manifestation", out.getId()
-        );
-
-        return toDTO(out);
-    }
-
     /** 
      * Validation par le trésorier → statut PLANIFIEE + notification à tous les membres
      * La manifestation est maintenant planifiée et visible par tous

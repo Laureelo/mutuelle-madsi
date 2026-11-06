@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { Pret, PretCreate, PretUpdate, PretFilter, Remboursement, RemboursementCreate } from '../models/pret.model';
+import { Pret, PretCreate, PretFilter } from '../models/pret.model';
 import { PageResponse } from '../models/common.model';
 
 @Injectable({

@@ -445,7 +445,6 @@ export class RegisterComponent {
 
       this.authService.register(dataToSend).subscribe({
         next: (response) => {
-          console.log('Registration successful:', response);
           this.successMessage = 'Inscription réussie ! Votre compte a été créé avec le statut VISITEUR. Connectez-vous pour accéder au système et effectuer votre paiement d\'adhésion de 2 000 FCFA pour devenir membre actif.';
 
           setTimeout(() => {

@@ -1,5 +1,5 @@
 #!/bin/bash
-# Tests des emails et notifications : faux serveur SMTP local (port 2525) + backend démarré par restart-mail.sh
+# Tests des emails et notifications : faux serveur SMTP local (port 2525). Voir tests/README.md pour lancer l'application avec la messagerie pointée vers ce faux serveur.
 
 # --- Réglages (voir tests/README.md) ---
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && (pwd -W 2>/dev/null || pwd))"

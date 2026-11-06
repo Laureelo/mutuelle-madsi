@@ -6,6 +6,7 @@ import com.madsi.backend.historique.HistoriqueService;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -18,6 +19,7 @@ import java.time.ZoneOffset;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class OperationService {
     private final OperationRepository repo;
     private final HistoriqueService histo;
@@ -159,13 +161,12 @@ public class OperationService {
                     membreId,
                     "Opération ENTREE",
                     "type=%s, montant=%s, objet=%s/%s".formatted(typeOp, montant, objetType, objetId),
-                    HistoType.SYSTEME,                   // ✅ SYSTEME (pas CAISSE)
+                    HistoType.SYSTEME,                   // SYSTEME (pas CAISSE)
                     objetType, objetId
             );
         } catch (Exception e) {
             // Log l'erreur mais continue - l'historique n'est pas critique pour l'opération
-            System.err.println("Erreur lors de l'enregistrement dans l'historique (non bloquant): " + e.getMessage());
-            e.printStackTrace();
+            log.warn("Historique de l'opération non enregistré (non bloquant)", e);
         }
         
         return saved;
@@ -194,13 +195,12 @@ public class OperationService {
                     membreId,
                     "Opération SORTIE",
                     "type=%s, montant=%s, objet=%s/%s".formatted(typeOp, montant, objetType, objetId),
-                    HistoType.SYSTEME,                   // ✅ SYSTEME (pas CAISSE)
+                    HistoType.SYSTEME,                   // SYSTEME (pas CAISSE)
                     objetType, objetId
             );
         } catch (Exception e) {
             // Log l'erreur mais continue - l'historique n'est pas critique pour l'opération
-            System.err.println("Erreur lors de l'enregistrement dans l'historique (non bloquant): " + e.getMessage());
-            e.printStackTrace();
+            log.warn("Historique de l'opération non enregistré (non bloquant)", e);
         }
         
         return saved;
@@ -241,7 +241,7 @@ public class OperationService {
                 saved.getMembreId(),
                 "Annulation opération",
                 "opId=%d, motif=%s".formatted(operationId, motif == null ? "-" : motif),
-                HistoType.SYSTEME,                   // ✅ SYSTEME (pas CAISSE)
+                HistoType.SYSTEME,                   // SYSTEME (pas CAISSE)
                 saved.getObjetType(), saved.getObjetId()
         );
         return saved;
@@ -258,7 +258,7 @@ public class OperationService {
             String dateTo,   // YYYY-MM-DD
             Pageable pageable
     ){
-        // ✅ évite Specification.where(...) déprécié
+        // évite Specification.where(...), déprécié
         Specification<Operation> spec = (root, cq, cb) -> cb.conjunction();
 
         if (q != null && !q.isBlank()){
@@ -290,6 +290,6 @@ public class OperationService {
             spec = spec.and((r, cq, cb) -> cb.lessThan(r.get("dateOp"), to));
         }
 
-        return repo.findAll(spec, pageable);    // ✅ OK après patch du Repository (voir B)
+        return repo.findAll(spec, pageable);
     }
 }

@@ -4,7 +4,6 @@ package com.madsi.backend.cotisations;
 import java.math.BigDecimal;
 import java.util.List;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,11 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.madsi.backend.common.Enums.ModePaiement;
-import com.madsi.backend.common.dto.PageResponse;
 import com.madsi.backend.cotisations.dto.CotisationDTO;
 import com.madsi.backend.cotisations.dto.CotisationResponseDTO;
 import com.madsi.backend.cotisations.dto.ExistsResponse;
-import com.madsi.backend.operations.Recu;
 import com.madsi.backend.operations.RecuRepository;
 
 import lombok.Data;

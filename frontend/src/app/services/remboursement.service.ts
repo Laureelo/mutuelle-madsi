@@ -16,11 +16,6 @@ export class RemboursementService {
     return this.http.get<Echeance[]>(`${this.API_URL}/prets/${pretId}/echeancier`);
   }
 
-  // Obtenir les remboursements d'une échéance
-  getRemboursementsByEcheance(echeanceId: number): Observable<RemboursementPret[]> {
-    return this.http.get<RemboursementPret[]>(`${this.API_URL}/echeances/${echeanceId}/remboursements`);
-  }
-
   // Enregistrer un remboursement (trésorier - ESPECES ou validation MOBILE_MONEY)
   enregistrerRemboursement(data: RemboursementCreate): Observable<RemboursementAck> {
     return this.http.post<RemboursementAck>(`${this.API_URL}/remboursements`, data);

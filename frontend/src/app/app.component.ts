@@ -5,9 +5,6 @@ import { DialogHostComponent } from './components/layout/dialog-host.component';
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, DialogHostComponent],
-  template: `<router-outlet /><app-dialog-host />`,
-  styleUrl: './app.component.css'
+  template: `<router-outlet /><app-dialog-host />`
 })
-export class AppComponent {
-  title = 'frontend';
-}
+export class AppComponent {}

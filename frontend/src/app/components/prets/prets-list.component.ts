@@ -9,7 +9,7 @@ import { MembreService } from '../../services/membre.service';
 import { AuthService } from '../../services/auth.service';
 import { Membre } from '../../models/membre.model';
 import { RemboursementService } from '../../services/remboursement.service';
-import { Echeance, RemboursementPret, RemboursementCreate, EchStatut } from '../../models/echeance.model';
+import { Echeance, RemboursementCreate, EchStatut } from '../../models/echeance.model';
 import { PreuveService } from '../../services/preuve.service';
 import { compresserImage } from '../../utils/image';
 import { RecuService } from '../../services/recu.service';
@@ -710,7 +710,6 @@ export class PretsListComponent implements OnInit {
     dureeMois: 12
   };
   membres: Membre[] = [];
-  loadingMembers = false;
   saving = false;
   formError = '';
 
@@ -1164,25 +1163,6 @@ export class PretsListComponent implements OnInit {
     };
   }
 
-  loadMembers(): void {
-    this.loadingMembers = true;
-    this.membreService.getAll({ page: 0, size: 1000 }).subscribe({
-      next: (response: PageResponse<Membre>) => {
-        // Filtrer seulement les membres actifs
-        this.membres = response.content.filter(m => m.etatCompte === 'ACTIF');
-        this.loadingMembers = false;
-        if (this.membres.length === 0) {
-          this.formError = 'Aucun membre actif trouvé. Veuillez activer des membres avant de créer un prêt.';
-        }
-      },
-      error: (err) => {
-        console.error('Erreur lors du chargement des membres:', err);
-        this.loadingMembers = false;
-        this.formError = 'Erreur lors du chargement des membres: ' + (err.error?.message || err.message);
-      }
-    });
-  }
-
   onFormChange(): void {
     // Cette méthode force Angular à vérifier la validité du formulaire
   }
@@ -1203,20 +1183,6 @@ export class PretsListComponent implements OnInit {
         return val; // 1 échéance par mois
       default:
         return val;
-    }
-  }
-
-  getPeriodeLabel(): string {
-    const val = this.periodeValeur;
-    switch (this.periodeUnite) {
-      case 'jour':
-        return val === 1 ? '1 jour' : `${val} jours`;
-      case 'semaine':
-        return val === 1 ? '1 semaine' : `${val} semaines`;
-      case 'mois':
-        return val === 1 ? '1 mois' : `${val} mois`;
-      default:
-        return `${val}`;
     }
   }
 
@@ -1269,7 +1235,6 @@ export class PretsListComponent implements OnInit {
 
     this.pretService.create(pretData).subscribe({
       next: (pret) => {
-        console.log('Prêt créé avec succès:', pret);
         this.saving = false;
         this.closeModal();
         this.loadPrets();

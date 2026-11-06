@@ -9,7 +9,6 @@ import { ChartBoxComponent } from '../stats/chart-box.component';
 import { MembreService } from '../../services/membre.service';
 import { CotisationService } from '../../services/cotisation.service';
 import { ManifestationService } from '../../services/manifestation.service';
-import { EtatCompte } from '../../models/membre.model';
 import { Cotisation, StatutCotisation } from '../../models/cotisation.model';
 import { Manifestation } from '../../models/manifestation.model';
 import { MontantsService } from '../../services/montants.service';
@@ -405,7 +404,6 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {
     this.isBrowser = isPlatformBrowser(this.platformId);
     this.authService.currentUser$.subscribe(user => {
-      console.log('👤 currentUser$ émis:', user?.id);
       this.currentUser = user;
       if (user) {
         this.loadCurrentMembre();
@@ -418,7 +416,6 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit(): void {
     // S'abonner aux notifications de rafraîchissement
     this.refreshSubscription = this.statsService.refreshStats$.subscribe(() => {
-      console.log('🔔 Notification de rafraîchissement reçue');
       this.loadStats();
     });
   }
@@ -462,7 +459,6 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
   loadStats(): void {
     // Empêcher les appels simultanés
     if (this.isLoadingStats) {
-      console.log('⚠️ loadStats() déjà en cours, appel ignoré');
       return;
     }
 
@@ -473,7 +469,6 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
       return;
     }
 
-    console.log('🔄 Début loadStats()');
     this.isLoadingStats = true;
     this.loading = true;
     this.error = '';
@@ -481,7 +476,6 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
     if (!this.currentUser?.id) {
       this.loading = false;
       this.isLoadingStats = false;
-      console.log('❌ Pas d\'utilisateur connecté');
       return;
     }
 
@@ -547,7 +541,6 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
             console.error('Erreur chargement cotisations:', err);
             this.loading = false;
             this.isLoadingStats = false;
-            console.log('✅ Fin loadStats() (avec erreur cotisations)');
           }
         });
       },
@@ -555,7 +548,6 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
         console.error('Erreur chargement manifestations:', err);
         this.loading = false;
         this.isLoadingStats = false;
-        console.log('✅ Fin loadStats() (avec erreur manifestations)');
       }
     });
   }
@@ -632,17 +624,6 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
 
   confirmations: ConfirmationsEnAttente | null = null;
   situation: any = null;
-
-  getRoleLabel(role: string): string {
-    const roleLabels: Record<string, string> = {
-      'VISITEUR': 'Visiteur',
-      'MEMBRE': 'Membre',
-      'TRESORIER': 'Trésorier',
-      'COMMISSAIRE': 'Commissaire aux comptes',
-      'ADMIN': 'Administrateur'
-    };
-    return roleLabels[role] || role;
-  }
 
   logout(): void {
     this.authService.logout();

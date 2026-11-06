@@ -94,7 +94,6 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/adhesions/me").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/adhesions/*/valider", "/api/adhesions/*/rejeter").hasRole(Roles.TRESORIER)
                         .requestMatchers(HttpMethod.GET, "/api/adhesions", "/api/adhesions/**").hasAnyRole(Roles.TRESORIER, Roles.ADMIN)
-                        .requestMatchers("/api/paiements-adhesion/**").hasAnyRole(Roles.TRESORIER, Roles.ADMIN)
 
                         // ============ MEMBRES ============
                         .requestMatchers(HttpMethod.GET, "/api/membres/en-attente-activation").hasRole(Roles.ADMIN)

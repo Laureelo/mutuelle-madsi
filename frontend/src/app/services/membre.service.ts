@@ -54,7 +54,6 @@ export class MembreService {
    * Validation par la trésorerie : passe de EN_ATTENTE à VALIDE_PAR_TRESORERIE
    */
   validerParTresorerie(id: number, tresorierId: number = 1): Observable<Membre> {
-    // TODO: Récupérer tresorierId depuis le token JWT ou le service d'authentification
     return this.http.post<Membre>(`${this.BASE_PATH}/${id}/valider-tresorerie?tresorierId=${tresorierId}`, {});
   }
 
@@ -62,7 +61,6 @@ export class MembreService {
    * Activation par l'administrateur métier : passe de VALIDE_PAR_TRESORERIE à ACTIF
    */
   validateMembre(id: number, validateurId: number = 1): Observable<Membre> {
-    // TODO: Récupérer validateurId depuis le token JWT ou le service d'authentification
     // L'identité de l'admin est déduite du jeton par le serveur
     return this.http.post<Membre>(`${this.BASE_PATH}/${id}/activer`, {});
   }
@@ -73,21 +71,12 @@ export class MembreService {
   }
 
   deactivateMembre(id: number, adminId: number = 1): Observable<Membre> {
-    // TODO: Récupérer adminId depuis le token JWT ou le service d'authentification
     return this.http.post<Membre>(`${this.BASE_PATH}/${id}/desactiver?adminId=${adminId}`, {});
-  }
-
-  reactivateMembre(id: number, adminId: number = 1): Observable<Membre> {
-    return this.http.post<Membre>(`${this.BASE_PATH}/${id}/reactiver?adminId=${adminId}`, {});
   }
 
   /** Situation du membre : à jour de ses cotisations, mois impayés, prêts en cours. */
   getSituation(id: number): Observable<any> {
     return this.http.get<any>(`${this.BASE_PATH}/${id}/situation`);
-  }
-
-  getSolde(id: number): Observable<{ solde: number }> {
-    return this.http.get<{ solde: number }>(`${this.BASE_PATH}/${id}/solde`);
   }
 
 }

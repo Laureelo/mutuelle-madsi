@@ -349,10 +349,8 @@ export class MembresListComponent implements OnInit {
 
   loadStats(): void {
     const currentYear = new Date().getFullYear();
-    console.log('=== Chargement stats membership pour année:', currentYear);
     this.statsService.getMembershipStats(currentYear).subscribe({
       next: (stats) => {
-        console.log('=== Stats reçues:', JSON.stringify(stats));
         this.membershipStats = stats;
       },
       error: (err) => {
