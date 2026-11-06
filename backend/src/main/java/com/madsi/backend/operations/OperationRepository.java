@@ -15,7 +15,6 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 
-// ⭐ SEULE MODIFICATION : Ajoutez JpaSpecificationExecutor
 public interface OperationRepository extends
         JpaRepository<Operation, Long>,
         JpaSpecificationExecutor<Operation> { // ← AJOUT ICI
@@ -40,7 +39,7 @@ public interface OperationRepository extends
     """)
     BigDecimal sumDepensesForManifestation(@Param("manifId") Long manifId);
 
-    // ⭐ AJOUT : Chargement optimisé par période (exclut les opérations ANNULEE)
+    // Chargement optimisé par période (exclut les opérations ANNULEE)
     @Query("""
       SELECT o FROM Operation o
       WHERE o.statut = com.madsi.backend.common.Enums.OpStatut.ENREGISTREE
@@ -74,7 +73,7 @@ public interface OperationRepository extends
       ORDER BY m
     """, nativeQuery = true)
     List<Object[]> monthlyCashflow(@Param("year") int year);
-    // ⭐ AJOUT : Somme par type d'opération
+    // Somme par type d'opération
     @Query("""
       SELECT o.typeOp, SUM(o.montant)
       FROM Operation o
@@ -83,7 +82,7 @@ public interface OperationRepository extends
     """)
     List<Object[]> sommeParType(@Param("year") int year);
 
-    // ⭐ AJOUT : Top dépenses
+    // Top dépenses
     @Query("""
       SELECT o.typeOp, SUM(o.montant) as total
       FROM Operation o
@@ -94,7 +93,7 @@ public interface OperationRepository extends
     """)
     List<Object[]> topDepenses(@Param("year") int year);
 
-    // ⭐ AJOUT : Méthodes pour les stats
+    // Méthodes pour les stats
     @Query("""
        SELECT COALESCE(SUM(o.montant),0)
        FROM Operation o

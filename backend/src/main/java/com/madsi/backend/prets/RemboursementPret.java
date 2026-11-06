@@ -41,7 +41,7 @@ public class RemboursementPret {
     @Column(name="montant", nullable=false, precision=12, scale=2)
     private BigDecimal montant;
 
-    // ✅ pour le flux mobile
+    // pour le flux mobile
     @Column(length = 120)
     private String reference;   // TxnID mobile money, etc.
 

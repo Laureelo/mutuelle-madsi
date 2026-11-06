@@ -23,10 +23,6 @@ public interface MembreRepository extends JpaRepository<Membre, Long>, JpaSpecif
     long countByRoleAndEtatCompte(RoleMembre role, Enums.EtatCompte etat);
 
 
-    // Recherche simple pour la liste
-    Page<Membre> findByLastNameContainingIgnoreCaseOrFirstNameContainingIgnoreCaseOrEmailContainingIgnoreCase(
-            String lastName, String firstName, String email, Pageable pageable);
-
     @Query("""
     SELECT m.id FROM Membre m
     WHERE (:q IS NULL OR :q = '' OR
@@ -60,8 +56,6 @@ public interface MembreRepository extends JpaRepository<Membre, Long>, JpaSpecif
     Page<Membre> findImpayesForMonth(@Param("mois") String mois,
                                      @Param("q") String q,
                                      Pageable pageable);
-
-    long countByEtatCompte(Enums.EtatCompte etat);
 
     List<Membre> findByEtatCompte(Enums.EtatCompte etat);
 

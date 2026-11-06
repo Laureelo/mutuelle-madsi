@@ -45,12 +45,6 @@ export class RapportService {
   telecharger(id: number): Observable<Blob> {
     return this.http.get(`${this.BASE_PATH}/exports/${id}/file`, { responseType: 'blob' });
   }
-
-  historique(page: number = 0, size: number = 10): Observable<any> {
-    return this.http.get(`${this.BASE_PATH}/exports`, {
-      params: { page: page.toString(), size: size.toString() }
-    });
-  }
 }
 
 

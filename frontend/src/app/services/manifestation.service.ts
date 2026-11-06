@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { Manifestation, ManifestationCreate, ManifestationUpdate, ManifestationFilter, Participation, ParticipationCreate } from '../models/manifestation.model';
+import { Manifestation, ManifestationCreate, ManifestationUpdate, ManifestationFilter } from '../models/manifestation.model';
 import { PageResponse } from '../models/common.model';
 
 @Injectable({

@@ -16,8 +16,4 @@ public final class Roles {
     public static final String[] LECTEURS_FINANCES = {TRESORIER, COMMISSAIRE, ADMIN};
     /** Rôles qui consultent la liste des membres. */
     public static final String[] CONSULTENT_MEMBRES = {TRESORIER, ADMIN};
-
-    public static String asSpring(String role){
-        return role.startsWith("ROLE_") ? role : "ROLE_" + role;
-    }
 }

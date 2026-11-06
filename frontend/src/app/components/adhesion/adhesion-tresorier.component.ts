@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { AdhesionService } from '../../services/adhesion.service';
-import { Adhesion, StatutAdhesion, AdhesionStats } from '../../models/adhesion.model';
+import { Adhesion, AdhesionStats } from '../../models/adhesion.model';
 import { AuthService } from '../../services/auth.service';
 import { MembreService } from '../../services/membre.service';
 import { StatsService } from '../../services/stats.service';
@@ -565,10 +565,6 @@ export class AdhesionTresorierComponent implements OnInit {
         this.closeRejetModal();
       }
     });
-  }
-
-  showDetails(adhesion: Adhesion): void {
-    this.dialog.alerte(`Détails adhésion #${adhesion.id}\n\nMembre: ${adhesion.membreId}\nMontant: ${adhesion.montant} FCFA\nStatut: ${adhesion.statut}\nRemarque: ${adhesion.remarque || 'Aucune'}`);
   }
 
   showDetailsModal(adhesion: Adhesion): void {

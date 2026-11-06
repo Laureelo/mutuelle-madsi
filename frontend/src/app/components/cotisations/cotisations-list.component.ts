@@ -4,8 +4,8 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CotisationService } from '../../services/cotisation.service';
 import { AuthService } from '../../services/auth.service';
-import { Cotisation, CotisationCreate, CotisationUpdate, StatutCotisation, ModePaiement, DeclarerCotisationInput } from '../../models/cotisation.model';
-import { Membre, EtatCompte } from '../../models/membre.model';
+import { Cotisation, StatutCotisation, ModePaiement, DeclarerCotisationInput } from '../../models/cotisation.model';
+import { Membre } from '../../models/membre.model';
 import { PageResponse } from '../../models/common.model';
 import { MontantsService } from '../../services/montants.service';
 import { RecuService } from '../../services/recu.service';
@@ -714,7 +714,6 @@ export class CotisationsListComponent implements OnInit {
     // Utiliser l'endpoint de déclaration (comme pour l'adhésion)
     this.cotisationService.declarer(this.formData).subscribe({
       next: (cotisation) => {
-        console.log('Cotisation déclarée avec succès:', cotisation);
         this.saving = false;
         this.closeModal();
         this.loadCotisations();
@@ -915,17 +914,6 @@ export class CotisationsListComponent implements OnInit {
         this.dialog.erreur('Erreur lors du rejet: ' + (err.error?.message || err.message));
       }
     });
-  }
-
-  async annuler(cotisation: Cotisation): Promise<void> {
-    // Ancienne méthode - gardée pour compatibilité
-    const motif = await this.dialog.prompt({ titre: 'Motif', message: 'Motif de l\'annulation:', label: 'Motif', requis: true });
-    if (motif) {
-      this.cotisationService.rejeter(cotisation.id, motif).subscribe({
-        next: () => this.loadCotisations(),
-        error: (err) => this.dialog.erreur('Erreur: ' + (err.error?.message || err.message))
-      });
-    }
   }
 
   viewDetails(cotisation: Cotisation): void {

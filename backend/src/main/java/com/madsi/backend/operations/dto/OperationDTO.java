@@ -15,10 +15,10 @@ import com.madsi.backend.common.Enums.TypeOperation;
 
 public record OperationDTO(
         Long id,
-        OffsetDateTime dateOp,      // ⚠ front attend "dateOp"
+        OffsetDateTime dateOp,      // le front attend "dateOp"
         BigDecimal montant,
         SensOp sens,
-        TypeOperation typeOp,       // ⚠ front affiche "typeOp"
+        TypeOperation typeOp,       // le front affiche "typeOp"
         ModePaiement modePaiement,
         String reference,
         OpStatut statut,

@@ -19,13 +19,6 @@ public class NotificationManifestationService {
 
     private final NotificationService notif;
 
-    /** Le déclarant apprend que sa demande est validée. */
-    public void sendValidation(Long destinataireId, Manifestation m) {
-        notif.informer(destinataireId, NotifType.INFO, "Manifestation validée : " + m.getLibelle(),
-                "Votre manifestation « " + m.getLibelle() + " » du " + jour(m) + lieu(m) + " a été validée.",
-                TopicType.MANIFESTATION, m.getId(), true);
-    }
-
     /** Le déclarant apprend que sa demande est rejetée, avec le motif. */
     public void sendRejet(Long destinataireId, Manifestation m, String motif) {
         notif.informer(destinataireId, NotifType.ALERTE, "Manifestation non retenue : " + m.getLibelle(),

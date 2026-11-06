@@ -7,7 +7,7 @@ import lombok.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "manifestations") // 👈 fige le nom de table
+@Table(name = "manifestations") // nom de table fixe
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor @Builder
 public class Manifestation {

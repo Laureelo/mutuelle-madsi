@@ -69,7 +69,7 @@ indique la date de la dernière sauvegarde. Le guide d'installation explique com
 
 ## Tests automatiques
 
-Le dossier [tests](tests/README.md) contient plus de 230 vérifications automatiques (droits, parcours, règles du règlement,
+Le dossier [tests](tests/README.md) contient plus de 300 vérifications automatiques (droits, parcours, règles du règlement,
 statistiques comparées au SQL, emails). Elles se lancent sur une base de test, jamais sur la base réelle.
 
 ## Organisation du dépôt

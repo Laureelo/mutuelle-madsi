@@ -13,7 +13,7 @@ indépendantes. Ils couvrent :
 | `test-stats.sh` | Les statistiques comparées au SQL, l'accès par rôle, l'échéancier, les dépenses rattachées aux activités |
 | `test-emails.sh` | Les emails et notifications (avec un faux serveur SMTP local), mot de passe oublié, annonces, rappels |
 
-## ⚠️ À lire avant de lancer
+## À lire avant de lancer
 
 * **N'utilisez JAMAIS ces tests sur la base de données réelle.** Ils créent des comptes, des prêts, des dépenses…
   Créez une base **de test** (ex. `createdb mutuelle_test`) et lancez l'application dessus.

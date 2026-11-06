@@ -1,7 +1,6 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute, RouterModule } from '@angular/router';
-import { Subscription } from 'rxjs';
 import { MembreService } from '../../services/membre.service';
 import { CotisationService } from '../../services/cotisation.service';
 import { PretService } from '../../services/pret.service';
@@ -232,27 +231,6 @@ import { DialogService } from '../../services/dialog.service';
 
           <!-- Right Column -->
           <div class="right-column">
-            <!-- Solde -->
-            <div class="card card-solde">
-              <div class="card-header">
-                <h3><i class="bi bi-wallet2"></i> Solde du Compte</h3>
-              </div>
-              <div class="card-body">
-                <div class="solde-display">
-                  <div>
-                    <p class="solde-label">Solde actuel</p>
-                    <div class="solde-amount">
-                      <span class="solde-value">{{ formatMoney(solde) }}</span>
-                      <span class="solde-currency">FCFA</span>
-                    </div>
-                  </div>
-                  <button class="btn-icon" (click)="refreshSolde()" title="Actualiser">
-                    <i class="bi bi-arrow-clockwise"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-
             <!-- Adhésions -->
             <div class="card">
               <div class="card-header">
@@ -310,8 +288,8 @@ import { DialogService } from '../../services/dialog.service';
                   <div class="list-item" *ngFor="let cotisation of cotisations">
                     <div class="item-content">
                       <div class="item-header">
-                        <strong>{{ cotisation.periode }}</strong>
-                        <span class="badge badge-sm">{{ cotisation.statut }}</span>
+                        <strong>{{ libellePeriodes(cotisation.periodes || cotisation.periode) }}</strong>
+                        <span class="badge badge-sm" [ngClass]="classeStatut(cotisation.statut)">{{ libelleStatut(cotisation.statut) }}</span>
                       </div>
                       <div class="item-details">
                         <span><i class="bi bi-cash-stack"></i> {{ formatMoney(cotisation.montant) }} FCFA</span>
@@ -348,7 +326,7 @@ import { DialogService } from '../../services/dialog.service';
                     <div class="item-content">
                       <div class="item-header">
                         <strong>{{ formatMoney(pret.montant) }} FCFA</strong>
-                        <span class="badge badge-sm">{{ pret.statut }}</span>
+                        <span class="badge badge-sm" [ngClass]="classeStatut(pret.statut)">{{ libelleStatut(pret.statut) }}</span>
                       </div>
                       <div class="item-details">
                         <span><i class="bi bi-calendar-range"></i> {{ pret.duree }} mois</span>
@@ -807,22 +785,6 @@ import { DialogService } from '../../services/dialog.service';
       color: #212529;
     }
 
-    .card-solde {
-      background: #495057;
-      color: white;
-      border-color: #495057;
-    }
-
-    .card-solde .card-header {
-      background: rgba(255, 255, 255, 0.1);
-      border-bottom-color: rgba(255, 255, 255, 0.2);
-    }
-
-    .card-solde .card-header h3,
-    .card-solde .card-header i {
-      color: white;
-    }
-
     /* Info List */
     .info-list {
       display: flex;
@@ -924,35 +886,6 @@ import { DialogService } from '../../services/dialog.service';
       gap: 8px;
     }
 
-    /* Solde Display */
-    .solde-display {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .solde-label {
-      font-size: 14px;
-      opacity: 0.9;
-      margin: 0 0 8px 0;
-    }
-
-    .solde-amount {
-      display: flex;
-      align-items: baseline;
-      gap: 8px;
-    }
-
-    .solde-value {
-      font-size: 32px;
-      font-weight: 700;
-    }
-
-    .solde-currency {
-      font-size: 16px;
-      opacity: 0.9;
-    }
-
     /* List */
     .list {
       display: flex;
@@ -1044,7 +977,7 @@ import { DialogService } from '../../services/dialog.service';
     }
   `]
 })
-export class MembreDetailComponent implements OnInit, OnDestroy {
+export class MembreDetailComponent implements OnInit {
   private dialog = inject(DialogService);
   private membreService = inject(MembreService);
   private cotisationService = inject(CotisationService);
@@ -1071,7 +1004,6 @@ export class MembreDetailComponent implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);
 
   membre?: Membre;
-  solde = 0;
   cotisations: Cotisation[] = [];
   prets: Pret[] = [];
   adhesions: Adhesion[] = [];
@@ -1082,31 +1014,16 @@ export class MembreDetailComponent implements OnInit, OnDestroy {
   loadingAdhesions = false;
   error = '';
 
-  private refreshSubscription?: Subscription;
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.loadAllData(+id);
-      
-      // S'abonner aux notifications de rafraîchissement
-      this.refreshSubscription = this.statsService.refreshStats$.subscribe(() => {
-        if (this.membre) {
-          this.loadSolde(this.membre.id);
-        }
-      });
-    }
-  }
-
-  ngOnDestroy(): void {
-    if (this.refreshSubscription) {
-      this.refreshSubscription.unsubscribe();
     }
   }
 
   loadAllData(id: number): void {
     this.loadMembre(id);
-    this.loadSolde(id);
     this.loadCotisations(id);
     this.loadPrets(id);
     this.loadAdhesions(id);
@@ -1130,23 +1047,6 @@ export class MembreDetailComponent implements OnInit, OnDestroy {
         this.loading = false;
       }
     });
-  }
-
-  loadSolde(id: number): void {
-    this.membreService.getSolde(id).subscribe({
-      next: (response) => {
-        this.solde = response.solde || 0;
-      },
-      error: () => {
-        this.solde = 0;
-      }
-    });
-  }
-
-  refreshSolde(): void {
-    if (this.membre) {
-      this.loadSolde(this.membre.id);
-    }
   }
 
   loadCotisations(membreId: number): void {
@@ -1268,15 +1168,25 @@ export class MembreDetailComponent implements OnInit, OnDestroy {
     return labels[etat] || etat;
   }
 
-  getEtatIcon(etat: EtatCompte): string {
-    const icons: Record<EtatCompte, string> = {
-      [EtatCompte.VISITEUR]: 'bi-person-walking',
-      [EtatCompte.EN_ATTENTE]: 'bi-clock-history',
-      [EtatCompte.VALIDE_PAR_TRESORERIE]: 'bi-check2-circle',
-      [EtatCompte.ACTIF]: 'bi-check-circle-fill',
-      [EtatCompte.INACTIF]: 'bi-x-circle-fill'
-    };
-    return icons[etat] || 'bi-circle';
+  /** Couleur de la pastille selon l'état d'une cotisation ou d'un prêt. */
+  classeStatut(statut: string | undefined): string {
+    switch (statut) {
+      case "PAYE": case "CLOTURE": return "badge-success";
+      case "REJETE": case "REFUSE": case "EN_RETARD": return "badge-danger";
+      case "EN_ATTENTE": case "DEMANDE": case "APPROUVE": case "PARTIEL": case "EN_COURS": return "badge-warning";
+      default: return "badge-secondary";
+    }
+  }
+
+  libelleStatut(statut: string | undefined): string {
+    if (!statut) return "";
+    const t = statut.replace(/_/g, " ").toLowerCase();
+    return t.charAt(0).toUpperCase() + t.slice(1);
+  }
+
+  /** "2026-01,2026-02" devient "2026-01, 2026-02". */
+  libellePeriodes(periodes: string | undefined): string {
+    return (periodes || "").split(",").map(p => p.trim()).filter(Boolean).join(", ");
   }
 
   formatDate(date: string | Date): string {

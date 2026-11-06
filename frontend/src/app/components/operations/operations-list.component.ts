@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { OperationService } from '../../services/operation.service';
-import { Operation, SensOp, TypeOperation, CategorieOperation } from '../../models/operation.model';
+import { Operation, SensOp, TypeOperation } from '../../models/operation.model';
 import { PageResponse } from '../../models/common.model';
 import { MembreService } from '../../services/membre.service';
 import { Membre } from '../../models/membre.model';

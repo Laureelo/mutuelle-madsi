@@ -4,7 +4,6 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Router } from '@angular/router';
 import { AdhesionService } from '../../services/adhesion.service';
 import { Adhesion, StatutAdhesion } from '../../models/adhesion.model';
-import { ModePaiement } from '../../models/cotisation.model';
 import { AuthService } from '../../services/auth.service';
 import { MontantsService } from '../../services/montants.service';
 import { RecuService } from '../../services/recu.service';

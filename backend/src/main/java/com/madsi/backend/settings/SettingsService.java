@@ -1,6 +1,5 @@
 package com.madsi.backend.settings;
 
-import java.util.List;
 
 import org.springframework.stereotype.Service;
 
@@ -9,9 +8,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.madsi.backend.settings.dto.SettingsDTO;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class SettingsService {
 
     /** Montants fixés par le règlement intérieur de la MADSI (art. 9 et 10). */
@@ -174,8 +175,7 @@ public class SettingsService {
         } catch (JsonProcessingException e) {
             // Si le JSON ne peut pas être désérialisé, retourner les valeurs par défaut
             // et logger l'erreur pour debug
-            System.err.println("Erreur désérialisation settings JSON: " + e.getMessage());
-            System.err.println("JSON reçu: " + json);
+            log.warn("Réglages illisibles, valeurs par défaut utilisées : {}", e.getMessage());
             return defaults();
         }
     }

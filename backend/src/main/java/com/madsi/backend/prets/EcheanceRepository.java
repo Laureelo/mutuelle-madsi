@@ -40,9 +40,6 @@ public interface EcheanceRepository extends JpaRepository<Echeance, Long> {
     """)
     List<Echeance> findOverdueBefore(@Param("before") LocalDate before);
 
-    /** Compat (ancien nom) -> délègue à findDueOn */
-    default List<Echeance> findDueAt(LocalDate date) { return findDueOn(date); }
-
     /** Supprime toutes les échéances d'un prêt */
     void deleteByPretId(Long pretId);
 }

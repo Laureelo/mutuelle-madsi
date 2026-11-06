@@ -9,6 +9,6 @@ public class HelloController {
     // test rapide pour vérifier que l'appli démarre
     @GetMapping("/api/hello")
     public String hello(){
-        return "Backend MADSI OK ✅";
+        return "Backend MADSI OK";
     }
 }

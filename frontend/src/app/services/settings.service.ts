@@ -65,10 +65,6 @@ export class SettingsService {
   reset(): Observable<SettingsDTO> {
     return this.http.post<SettingsDTO>(`${this.BASE_PATH}/reset`, {});
   }
-
-  getMeta(): Observable<SettingsMeta> {
-    return this.http.get<SettingsMeta>(`${this.BASE_PATH}/meta`);
-  }
 }
 
 

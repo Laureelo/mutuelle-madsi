@@ -26,9 +26,11 @@ import com.madsi.backend.prets.PretRepository;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class MembreService {
 
     private final MembreRepository repo;
@@ -86,7 +88,7 @@ public class MembreService {
         m.setRole(RoleMembre.VISITEUR); // Rôle VISITEUR jusqu'à activation par l'admin
         m.setEtatCompte(Enums.EtatCompte.VISITEUR);
         m.setDateRegistered(OffsetDateTime.now());
-        m.setPassword(encoder.encode(in.getPassword())); // ⚠ le hash est stocké dans password
+        m.setPassword(encoder.encode(in.getPassword())); // le hash est stocké dans password
 
         var saved = attribuerMatricule(repo.save(m));
 
@@ -182,18 +184,14 @@ public class MembreService {
                 try {
                     return toDTO(m);
                 } catch (Exception e) {
-                    System.err.println("Erreur conversion Membre en DTO (id=" + m.getId() + "): " + e.getMessage());
-                    e.printStackTrace();
+                    log.error("Conversion du membre {} impossible", m.getId(), e);
                     throw new RuntimeException("Erreur conversion membre id=" + m.getId() + ": " + e.getMessage(), e);
                 }
             });
             
             return PageResponse.of(dtoPage);
         } catch (Exception e) {
-            System.err.println("=== ERREUR dans MembreService.search ===");
-            System.err.println("q=" + q + ", etatCompte=" + etatCompte + ", role=" + role);
-            System.err.println("page=" + page + ", size=" + size);
-            e.printStackTrace();
+            log.error("Recherche de membres en échec (q={}, etatCompte={}, role={}, page={}, size={})", q, etatCompte, role, page, size, e);
             throw e;
         }
     }

@@ -60,24 +60,3 @@ export interface ManifestationFilter {
   page?: number;
   size?: number;
 }
-
-export interface Participation {
-  id: number;
-  manifestationId: number;
-  manifestationNom?: string;
-  membreId: number;
-  membreNom?: string;
-  membrePrenom?: string;
-  contribution: number;
-  dateParticipation: string;
-  commentaire?: string;
-  createdAt?: string;
-}
-
-export interface ParticipationCreate {
-  manifestationId: number;
-  membreId: number;
-  contribution: number;
-  dateParticipation: string;
-  commentaire?: string;
-}
