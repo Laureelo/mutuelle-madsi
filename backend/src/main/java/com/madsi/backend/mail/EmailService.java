@@ -137,7 +137,7 @@ public class EmailService {
     private String texteBrut(String titre, String texte) {
         String l = lien();
         return titre + "\n\n" + texte + (l != null ? "\n\nOuvrir l'application : " + l : "")
-                + "\n\n— " + nomOrganisation() + " (message automatique)";
+                + "\n\n- " + nomOrganisation() + " (message automatique)";
     }
 
     private String habiller(String titre, String texte) {

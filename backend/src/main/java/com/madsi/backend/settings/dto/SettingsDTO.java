@@ -51,6 +51,6 @@ public class SettingsDTO {
     @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Exports {
-        private String footer;     // ex: "MADSI — Généré le {{date}}"
+        private String footer;     // ex: "MADSI - Généré le {{date}}"
     }
 }

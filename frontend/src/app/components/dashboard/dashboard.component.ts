@@ -146,7 +146,7 @@ import { ConfirmationService, ConfirmationsEnAttente } from '../../services/conf
             <div class="col-lg-8 mb-3">
               <div class="card h-100">
                 <div class="card-header" style="background: linear-gradient(135deg, #3d9fa8 0%, #2d7a80 100%); border-bottom: 3px solid #e89a3c;">
-                  <h5 class="card-title mb-0 text-white"><i class="bi bi-graph-up me-2"></i>Entrées, sorties et caisse — {{ anneeCourante }}</h5>
+                  <h5 class="card-title mb-0 text-white"><i class="bi bi-graph-up me-2"></i>Entrées, sorties et caisse - {{ anneeCourante }}</h5>
                 </div>
                 <div class="card-body">
                   <app-chart-box *ngIf="graphiqueFlux; else pasDeFlux" [options]="graphiqueFlux"></app-chart-box>
@@ -577,7 +577,7 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
       yaxis: { labels: { formatter: abrege } },
       legend: { position: 'top', horizontalAlign: 'right' },
       grid: { borderColor: '#eef1f4', strokeDashArray: 4 },
-      tooltip: { shared: true, intersect: false, y: { formatter: (v: number | null) => v === null || v === undefined ? '—' : this.formatMoney(v) + ' FCFA' } }
+      tooltip: { shared: true, intersect: false, y: { formatter: (v: number | null) => v === null || v === undefined ? '-' : this.formatMoney(v) + ' FCFA' } }
     };
   }
 

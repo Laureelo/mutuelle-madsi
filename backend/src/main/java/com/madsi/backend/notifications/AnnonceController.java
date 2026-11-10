@@ -47,7 +47,7 @@ public class AnnonceController {
 
         String audience = in.audience() == null ? "TOUS" : in.audience();
         boolean email = Boolean.TRUE.equals(in.parEmail());
-        String signature = "\n\n— " + notifications.nomDe(guard.currentMembreId());
+        String signature = "\n\n- " + notifications.nomDe(guard.currentMembreId());
         String texte = message + signature;
 
         int envoyes = 0;

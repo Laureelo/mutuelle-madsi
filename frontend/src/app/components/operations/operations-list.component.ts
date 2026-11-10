@@ -252,7 +252,7 @@ import { DialogService } from '../../services/dialog.service';
               <select class="form-control" [(ngModel)]="formData.manifestationId" name="manifestationId" (ngModelChange)="onManifestationChoisie($event)">
                 <option [ngValue]="null">Aucune : dépense ordinaire</option>
                 <option *ngFor="let ma of manifestations" [ngValue]="ma.id">
-                  {{ ma.libelle }} — {{ ma.date }}{{ ma.membrePrenom ? ' (' + ma.membrePrenom + ' ' + ma.membreNom + ')' : '' }}
+                  {{ ma.libelle }} - {{ ma.date }}{{ ma.membrePrenom ? ' (' + ma.membrePrenom + ' ' + ma.membreNom + ')' : '' }}
                 </option>
               </select>
               <small class="text-muted">Choisissez la manifestation pour que la somme versée soit comptée dans le coût des activités.</small>

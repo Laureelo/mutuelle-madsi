@@ -203,7 +203,7 @@ const COULEURS_CATEGORIES = [C.teal, C.orange, C.purple, C.green, C.blue, C.yell
             <div class="col-xl-8">
               <div class="card chart-card">
                 <div class="card-header">
-                  <h5 class="card-title">Entrées, sorties et solde de la caisse — {{ annee }}</h5>
+                  <h5 class="card-title">Entrées, sorties et solde de la caisse - {{ annee }}</h5>
                   <div class="hint">Les barres montrent ce qui entre et sort chaque mois ; la courbe, l'argent disponible en fin de mois.</div>
                 </div>
                 <div class="card-body">
@@ -345,7 +345,7 @@ const COULEURS_CATEGORIES = [C.teal, C.orange, C.purple, C.green, C.blue, C.yell
                 <div class="d-flex justify-content-between">
                   <div>
                     <div class="kpi-label">Membres à jour de leurs cotisations</div>
-                    <div class="kpi-value">{{ m.tauxAJour === null ? '—' : (m.tauxAJour | number:'1.0-1':'fr') + ' %' }}</div>
+                    <div class="kpi-value">{{ m.tauxAJour === null ? '-' : (m.tauxAJour | number:'1.0-1':'fr') + ' %' }}</div>
                     <div class="kpi-sub">{{ m.membresAJour }} à jour · {{ m.membresEnRetard }} en retard</div>
                   </div>
                   <i class="bi bi-check2-circle kpi-icon"></i>
@@ -384,7 +384,7 @@ const COULEURS_CATEGORIES = [C.teal, C.orange, C.purple, C.green, C.blue, C.yell
             <div class="col-xl-6">
               <div class="card chart-card">
                 <div class="card-header">
-                  <h5 class="card-title">Nouveaux comptes et nouveaux adhérents — {{ annee }}</h5>
+                  <h5 class="card-title">Nouveaux comptes et nouveaux adhérents - {{ annee }}</h5>
                   <div class="hint">Comptes créés et adhésions validées, mois par mois</div>
                 </div>
                 <div class="card-body">
@@ -472,7 +472,7 @@ const COULEURS_CATEGORIES = [C.teal, C.orange, C.purple, C.green, C.blue, C.yell
             <div class="col-xl-6">
               <div class="card chart-card">
                 <div class="card-header">
-                  <h5 class="card-title">Activités par catégorie — {{ annee }}</h5>
+                  <h5 class="card-title">Activités par catégorie - {{ annee }}</h5>
                   <div class="hint">Manifestations planifiées et réalisées</div>
                 </div>
                 <div class="card-body">
@@ -484,7 +484,7 @@ const COULEURS_CATEGORIES = [C.teal, C.orange, C.purple, C.green, C.blue, C.yell
             <div class="col-xl-6">
               <div class="card chart-card">
                 <div class="card-header">
-                  <h5 class="card-title">Coût des activités par catégorie — {{ annee }}</h5>
+                  <h5 class="card-title">Coût des activités par catégorie - {{ annee }}</h5>
                   <div class="hint">Sommes réellement versées</div>
                 </div>
                 <div class="card-body">
@@ -659,7 +659,7 @@ export class StatsComponent implements OnInit {
           yaxis: { labels: { formatter: (v: number) => this.abrege(v) } },
           legend: { position: 'top', horizontalAlign: 'right' },
           grid: { borderColor: '#eef1f4', strokeDashArray: 4 },
-          tooltip: { shared: true, intersect: false, y: { formatter: (v: number | null) => v === null || v === undefined ? '—' : this.fmt(v) + ' FCFA' } }
+          tooltip: { shared: true, intersect: false, y: { formatter: (v: number | null) => v === null || v === undefined ? '-' : this.fmt(v) + ' FCFA' } }
         };
       }
       g['origines'] = this.beigne(t.entreesParOrigine, COULEURS_ORIGINES, 'Entrées', true);
@@ -681,7 +681,7 @@ export class StatsComponent implements OnInit {
             y: {
               formatter: (v: number | null, o: any) => {
                 const c = cm[o?.dataPointIndex ?? 0];
-                return v === null || !c ? '—' : `${v} % (${c.payes} sur ${c.attendus} membres)`;
+                return v === null || !c ? '-' : `${v} % (${c.payes} sur ${c.attendus} membres)`;
               }
             }
           }

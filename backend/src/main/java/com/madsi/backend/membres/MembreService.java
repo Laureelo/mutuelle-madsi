@@ -81,7 +81,7 @@ public class MembreService {
         m.setPhone(nullToEmpty(in.getPhone()));
         m.setFirstName(nullToEmpty(in.getFirstName()));
         m.setLastName(nullToEmpty(in.getLastName()));
-        // Garder null si vide — les contraintes UNIQUE en PG acceptent plusieurs NULL mais pas plusieurs ""
+        // Garder null si vide - les contraintes UNIQUE en PG acceptent plusieurs NULL mais pas plusieurs ""
         String mfp = in.getMatriculeFonctionPublique();
         m.setMatriculeFonctionPublique(mfp != null && !mfp.isBlank() ? mfp.trim() : null);
         m.setFonction(nullToEmpty(in.getFonction()));

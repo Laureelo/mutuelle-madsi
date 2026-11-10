@@ -289,7 +289,7 @@ export class TypesActiviteListComponent implements OnInit {
   async deleteTypeActivite(type: TypeActivite): Promise<void> {
     if (await this.dialog.confirm({
       titre: 'Supprimer ce type ?',
-      message: `Supprimer « ${type.libelle} — ${type.sousType} » ? Les manifestations déjà créées ne sont pas modifiées.`,
+      message: `Supprimer « ${type.libelle} - ${type.sousType} » ? Les manifestations déjà créées ne sont pas modifiées.`,
       danger: true, confirmer: 'Supprimer'
     })) {
       this.http.delete(`${this.apiUrl}/${type.id}`).subscribe({

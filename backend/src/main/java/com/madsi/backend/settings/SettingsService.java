@@ -208,7 +208,7 @@ public class SettingsService {
                         .rappelsEcheancesEnabled(Boolean.TRUE)
                         .build())
                 .exports(SettingsDTO.Exports.builder()
-                        .footer("MADSI — Généré le {{date}}")
+                        .footer("MADSI - Généré le {{date}}")
                         .build())
                 .build();
     }

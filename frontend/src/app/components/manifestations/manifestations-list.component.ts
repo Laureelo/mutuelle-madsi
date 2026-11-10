@@ -1140,7 +1140,7 @@ export class ManifestationsListComponent implements OnInit {
     if (!typeActivite) return '';
     let label = typeActivite.libelle || '';
     if (typeActivite.montantAlloue) {
-      label += ' — ' + new Intl.NumberFormat('fr-FR').format(typeActivite.montantAlloue).replace(/\u202f|\u00a0/g, ' ') + ' FCFA';
+      label += ' - ' + new Intl.NumberFormat('fr-FR').format(typeActivite.montantAlloue).replace(/\u202f|\u00a0/g, ' ') + ' FCFA';
     }
     return label;
   }
