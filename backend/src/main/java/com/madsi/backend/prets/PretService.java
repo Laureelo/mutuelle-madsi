@@ -170,6 +170,28 @@ public class PretService {
         return saved;
     }
 
+    /**
+     * Refus par le président (administrateur) : possible seulement pour un prêt au-dessus du seuil de confirmation,
+     * encore à l'étape « demande » et non confirmé. Le prêt passe à « refusé » et le demandeur est prévenu.
+     */
+    @Transactional
+    public Pret refuserParPresident(Long pretId, Long presidentId, String motif){
+        var p = pretRepo.findById(pretId).orElseThrow(() -> new NotFoundException("Prêt introuvable"));
+        if (p.getStatut() != PretStatut.DEMANDE) {
+            throw new IllegalStateException("Seul un prêt à l'étape « demande » peut être refusé.");
+        }
+        if (!depasseSeuil(p)) {
+            throw new IllegalStateException("Ce prêt ne dépasse pas " + fcfa(settingsService.seuilConfirmation())
+                    + " : le refus relève du trésorier.");
+        }
+        if (p.getConfirmePar() != null) {
+            throw new IllegalStateException("Ce prêt est déjà confirmé par le président : le trésorier ne peut plus que le valider ou le refuser.");
+        }
+        histo.enregistrer(p.getMembreId(), "Refus du prêt par le président",
+                "pretId=%d, par userId=%d".formatted(p.getId(), presidentId), HistoType.PRET, "pret", p.getId());
+        return refuser(pretId, motif);
+    }
+
     public Pret valider(Long pretId, Long acteurId){
         var p = pretRepo.findById(pretId).orElseThrow(() -> new NotFoundException("Prêt introuvable"));
         if (p.getStatut() != PretStatut.DEMANDE) {

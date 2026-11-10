@@ -125,6 +125,7 @@ public class SecurityConfig {
                         // ============ PRÊTS, ÉCHÉANCES, REMBOURSEMENTS ============
                         .requestMatchers(HttpMethod.POST, "/api/prets").hasAnyRole(ACTIFS) // soi-même ou trésorier (AccessGuard)
                         .requestMatchers(HttpMethod.POST, "/api/prets/*/confirmer").hasRole(Roles.ADMIN) // le président confirme les gros prêts
+                        .requestMatchers(HttpMethod.POST, "/api/prets/*/refuser-president").hasRole(Roles.ADMIN) // le président peut refuser un gros prêt
                         .requestMatchers(HttpMethod.POST, "/api/prets/**").hasRole(Roles.TRESORIER) // valider, approuver, refuser, rejeter, verser
                         .requestMatchers(HttpMethod.GET, "/api/prets").hasAnyRole(LECTEURS_FINANCES)
                         .requestMatchers(HttpMethod.GET, "/api/prets/**").hasAnyRole(ACTIFS) // soi-même ou lecteur des finances (AccessGuard)

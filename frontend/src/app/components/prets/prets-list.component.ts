@@ -120,6 +120,9 @@ import { DialogService } from '../../services/dialog.service';
                   <button *ngIf="isAdmin && pret.confirmationRequise" class="btn-icon btn-success" (click)="confirmerPret(pret)" title="Confirmer ce prêt (président)">
                     <i class="fas fa-user-check"></i>
                   </button>
+                  <button *ngIf="isAdmin && pret.confirmationRequise && pret.statut === StatutPret.DEMANDE && !pret.confirme" class="btn-icon btn-danger" (click)="showRejectModalFn(pret)" title="Refuser ce prêt (président)">
+                    <i class="fas fa-user-times"></i>
+                  </button>
                   <button *ngIf="isTresorier && pret.statut === StatutPret.DEMANDE && !pret.confirmationRequise" class="btn-icon btn-success" (click)="approuver(pret)" title="Approuver"><i class="fas fa-check"></i></button>
                   <button *ngIf="isTresorier && pret.statut === StatutPret.DEMANDE" class="btn-icon btn-danger" (click)="showRejectModalFn(pret)" title="Rejeter"><i class="fas fa-times"></i></button>
                   <button *ngIf="isTresorier && pret.statut === StatutPret.APPROUVE" class="btn-icon btn-success" (click)="showVerserModal(pret)" title="Décaisser"><i class="fas fa-hand-holding-usd"></i></button>
@@ -894,7 +897,10 @@ export class PretsListComponent implements OnInit {
   rejeter(): void {
     if (!this.selectedPret) return;
 
-    this.pretService.rejeter(this.selectedPret.id, this.rejectMotif).subscribe({
+    const appel = this.isAdmin
+      ? this.pretService.refuserParPresident(this.selectedPret.id, this.rejectMotif)
+      : this.pretService.rejeter(this.selectedPret.id, this.rejectMotif);
+    appel.subscribe({
       next: () => {
         this.loadPrets();
         this.closeRejectModal();

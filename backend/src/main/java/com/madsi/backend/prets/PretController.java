@@ -53,6 +53,13 @@ public class PretController {
         return service.toDTO(service.confirmer(id, guard.currentMembreId()));
     }
 
+    // 2-ter) Refus par le président (administrateur) d'un prêt au-dessus du seuil
+    @PostMapping("/{id}/refuser-president")
+    public PretDTO refuserParPresident(@PathVariable Long id, @RequestBody(required = false) MotifInput input){
+        String motif = (input != null) ? input.getMotif() : null;
+        return service.toDTO(service.refuserParPresident(id, guard.currentMembreId(), motif));
+    }
+
     // 2a) Approuver (alias pour valider)
     @PostMapping("/{id}/approuver")
     public PretDTO approuver(@PathVariable Long id){

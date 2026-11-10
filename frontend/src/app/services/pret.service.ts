@@ -43,6 +43,10 @@ export class PretService {
     return this.http.post<Pret>(`${this.BASE_PATH}/${id}/confirmer`, {});
   }
 
+  refuserParPresident(id: number, motif: string): Observable<Pret> {
+    return this.http.post<Pret>(`${this.BASE_PATH}/${id}/refuser-president`, { motif });
+  }
+
   approuver(id: number): Observable<Pret> {
     return this.http.post<Pret>(`${this.BASE_PATH}/${id}/approuver`, {});
   }
